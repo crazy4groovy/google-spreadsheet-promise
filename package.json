@@ -1,0 +1,26 @@
+{
+  "name": "google-spreadsheet-promise",
+  "version": "0.1.0",
+  "description": "A light promise wrapper around NPM google-spreadsheet",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha test",
+    "lint": "standard src/**/*.js"
+  },
+  "author": "crazy4groovy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crazy4groovy/google-spreadsheet-promise"
+  },
+  "dependencies": {
+    "es6-promisify": "^5.0.0",
+    "google-spreadsheet": "^2.0.3"
+  },
+  "devDependencies": {
+    "co": "^4.6.0",
+    "co-mocha": "^1.1.3",
+    "mocha": "^3.1.2",
+    "standard": "^5.4.1"
+  }
+}
