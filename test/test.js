@@ -28,10 +28,10 @@ describe.only('# db', () => {
       console.log(`>rows length: ${rows.length}`)
     })
 
-    it('should getColumnNames', function * () {
+    it('should getHeaderRow', function * () {
       this.timeout(maxTime)
-      const colNames = yield sheets.getColumnNames(1)
-      console.log(`>colNames: ${colNames} ${colNames.length}`)
+      const headerRow = yield sheets.getHeaderRow(1)
+      console.log(`>headerRow: ${headerRow} ${headerRow.length}`)
     })
 
     it('should getCells', function * () {

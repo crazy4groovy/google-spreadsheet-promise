@@ -7,7 +7,7 @@ Helpful link on limits of [Google spreadsheets](https://support.google.com/drive
 ## Usage
 
 ```js
-const db = require('google-spreadsheet-promise')
+const gsp = require('google-spreadsheet-promise')
 
 // a spreadsheet key is the long id in the sheets URL
 const key = '1fyGsYhinmTRNpJyw_uVDpI3wYmWz9FXIYgR2DuobZ_w'
@@ -17,17 +17,39 @@ const credsPath = './google-generated-creds.json'
 ...
 
 // Note- assumed to be in a generator for "yield":
-const sheets = yield db.init(key, credsPath)
+const sheets = yield gsp.init(key, credsPath)
+const sheetNumber = 1 // 1-based indexing of sheets
 
 const sheetsInfo = yield sheets.getInfo()
-const colNames = yield sheets.getColumnNames(1) // sheet 1
-const rows = yield sheets.getRows(1) // sheet 1
-const cells = yield sheets.getCells(1) // sheet 1
-const data = yield sheets.addRow(1, { // sheet 1
+const headerRow = yield sheets.getHeaderRow(sheetNumber)
+const rows = yield sheets.getRows(sheetNumber)
+const cells = yield sheets.getCells(sheetNumber)
+const data = yield sheets.addRow(sheetNumber, {
    col1Name: Math.random(),
    col2Name: Date.now() / (10 * 1000 * 1000) | 0
 })
+yield sheets.del(sheetNumber)
 ```
+
+## Full list of promisified functions
+
+```js
+const funcs = {
+  setTitle,
+  getInfo,
+  getRows,
+  getCells,
+  bulkUpdateCells,
+  addRow,
+  setHeaderRow,
+  getHeaderRow,
+  resize,
+  clear,
+  del
+}
+```
+
+## Notes
 
 See [test/test.js](./test/test.js) for other examples.
 

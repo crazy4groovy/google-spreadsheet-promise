@@ -25,19 +25,31 @@ function init (key, credsPath) {
       .then(info => info.worksheets)
       .then(sheets => {
         // console.log('[setting db functions]')
+        const setTitle = (page, title) => _p(sheets[page].setTitle)(title)
         const getRows = (page, opts) => _p(sheets[page].getRows)(opts || {})
         const getCells = (page, opts) => _p(sheets[page].getCells)(opts || {})
+        const bulkUpdateCells = (page, cells) => _p(sheets[page].bulkUpdateCells)(cells)
         const addRow = (page, opts) => _p(sheets[page].addRow)(opts || {})
-        const getColumnNames = (page) =>
+        const setHeaderRow = (page, opts) => _p(sheets[page].setHeaderRow)(opts || [])
+        const getHeaderRow = (page) =>
           getCells(page, { 'min-row': 1, 'max-row': 1, 'min-col': 1, 'max-col': 26 })
           .then(cells => cells.map(cell => cell.value))
+        const resize = (page, opts) => _p(sheets[page].resize)(opts || {})
+        const clear = (page) => _p(sheets[page].clear)()
+        const del = (page) => _p(sheets[page].del)()
 
         const funcs = {
+          setTitle,
           getInfo,
           getRows,
           getCells,
+          bulkUpdateCells,
           addRow,
-          getColumnNames
+          setHeaderRow,
+          getHeaderRow,
+          resize,
+          clear,
+          del
         }
         // console.log(funcs)
 
