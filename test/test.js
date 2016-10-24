@@ -6,7 +6,7 @@ require('co-mocha')
 const key = '1fyGsYhinmTRNpJyw_uVDpI3wYmWz9FXIYgR2DuobZ_w'
 const credsPath = '../google-generated-creds.json'
 
-const maxTime = 2000
+const maxTime = 3000
 
 describe.only('# db', () => {
   describe('## sanity', () => {
@@ -38,6 +38,36 @@ describe.only('# db', () => {
       this.timeout(maxTime)
       const cells = yield sheets.getCells(1)
       console.log(`>cells length: ${cells.length}`)
+    })
+
+    describe('async data save', () => {
+      it('should save a row\'s cell data', function * () {
+        this.timeout(maxTime)
+        const rows = yield sheets.getRows(1)
+        const row = rows[(rows.length / 2 | 0) - 1]
+        console.log(row)
+        console.log(row.orig.age)
+        row.orig.age = 123
+        yield row.save()
+        console.log('row saved')
+      })
+      it('should save a cell\'s data', function * () {
+        this.timeout(maxTime)
+        const cells = yield sheets.getCells(1)
+        const cell = cells[cells.length / 2 | 0]
+
+        console.log(cell.value)
+        console.log(cell.orig.value)
+
+        // save strategy #1 -> convenience method
+        yield cell.setValue(99)
+        console.log('cell saved 1')
+
+        // save strategy #2 -> update orig value & save
+        cell.orig.value = Math.random()
+        yield cell.save()
+        console.log('cell saved 2')
+      })
     })
   })
 })

@@ -26,8 +26,28 @@ function init (key, credsPath) {
       .then(sheets => {
         // console.log('[setting db functions]')
         const setTitle = (page, title) => _p(sheets[page].setTitle)(title)
-        const getRows = (page, opts) => _p(sheets[page].getRows)(opts || {})
-        const getCells = (page, opts) => _p(sheets[page].getCells)(opts || {})
+        const getRows = (page, opts) => {
+          return _p(sheets[page].getRows)(opts || {})
+          .then(rows => {
+            return rows.map(row => ({
+              save: _p(row.save),
+              del: _p(row.del),
+              orig: row
+            }))
+          })
+        }
+        const getCells = (page, opts) => {
+          return _p(sheets[page].getCells)(opts || {})
+          .then(cells => {
+            return cells.map(cell => ({
+              save: _p(cell.save),
+              del: _p(cell.del),
+              setValue: (val) => _p(cell.setValue)(val),
+              value: cell.value,
+              orig: cell
+            }))
+          })
+        }
         const bulkUpdateCells = (page, cells) => _p(sheets[page].bulkUpdateCells)(cells)
         const addRow = (page, opts) => _p(sheets[page].addRow)(opts || {})
         const setHeaderRow = (page, opts) => _p(sheets[page].setHeaderRow)(opts || [])
