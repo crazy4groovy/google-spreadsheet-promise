@@ -33,12 +33,12 @@ yield sheets.del(sheetNumber)
 
 ## Full list of promisified functions
 
-```js
+<pre>
 const funcs = {
   setTitle,
   getInfo,
-  getRows,
-  getCells,
+  getRows, *
+  getCells, *
   bulkUpdateCells,
   addRow,
   setHeaderRow,
@@ -47,7 +47,9 @@ const funcs = {
   clear,
   del
 }
-```
+</pre>
+
+\* _Note: Returned `row`s and `cell`s have a `.promise` property added to them, where `.save()`, `.del()`, etc are found. This helps maintain API compatibilities, including `bulkUpdateCells()`._
 
 ## Notes
 

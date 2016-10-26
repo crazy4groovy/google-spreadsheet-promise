@@ -6,7 +6,7 @@ require('co-mocha')
 const key = '1fyGsYhinmTRNpJyw_uVDpI3wYmWz9FXIYgR2DuobZ_w'
 const credsPath = '../google-generated-creds.json'
 
-const maxTime = 3000
+const maxTime = 4000
 
 describe.only('# db', () => {
   describe('## sanity', () => {
@@ -45,28 +45,42 @@ describe.only('# db', () => {
         this.timeout(maxTime)
         const rows = yield sheets.getRows(1)
         const row = rows[(rows.length / 2 | 0) - 1]
-        console.log(row)
-        console.log(row.orig.age)
-        row.orig.age = 123
-        yield row.save()
+        console.log(`row.age: ${row.age}`)
+        row.age = +row.age + 1
+        yield row.promise.save()
         console.log('row saved')
       })
+
       it('should save a cell\'s data', function * () {
         this.timeout(maxTime)
         const cells = yield sheets.getCells(1)
-        const cell = cells[cells.length / 2 | 0]
+        const cell = cells[(cells.length / 2 | 0)]
 
-        console.log(cell.value)
-        console.log(cell.orig.value)
+        console.log(`cell.value: ${cell.value}`)
 
         // save strategy #1 -> convenience method
-        yield cell.setValue(99)
+        yield cell.promise.setValue(+cell.value + 1)
         console.log('cell saved 1')
 
         // save strategy #2 -> update orig value & save
-        cell.orig.value = Math.random()
-        yield cell.save()
+        cell.value = Math.random()
+        yield cell.promise.save()
         console.log('cell saved 2')
+      })
+
+      it('should bulk update cells\' data', function * () {
+        this.timeout(maxTime)
+        const cells = yield sheets.getCells(1)
+        const cell1 = cells[cells.length / 2 | 0]
+        const cell2 = cells[(cells.length / 2 | 0) + 1]
+
+        console.log(`cell1.value: ${cell1.value}`)
+        console.log(`cell2.value: ${cell2.value}`)
+
+        cell1.value = +cell1.value + 1
+        cell2.value = +cell2.value + 1
+
+        yield sheets.bulkUpdateCells(1, [cell1, cell2])
       })
     })
   })
