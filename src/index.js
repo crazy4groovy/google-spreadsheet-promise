@@ -29,23 +29,26 @@ function init (key, credsPath) {
         const getRows = (page, opts) => {
           return _p(sheets[page].getRows)(opts || {})
           .then(rows => {
-            return rows.map(row => ({
-              save: _p(row.save),
-              del: _p(row.del),
-              orig: row
-            }))
+            rows.forEach(row => {
+              row.promise = {
+                save: _p(row.save),
+                del: _p(row.del)
+              }
+            })
+            return rows
           })
         }
         const getCells = (page, opts) => {
           return _p(sheets[page].getCells)(opts || {})
           .then(cells => {
-            return cells.map(cell => ({
-              save: _p(cell.save),
-              del: _p(cell.del),
-              setValue: (val) => _p(cell.setValue)(val),
-              value: cell.value,
-              orig: cell
-            }))
+            cells.forEach(cell => {
+              cell.promise = {
+                save: _p(cell.save),
+                del: _p(cell.del),
+                setValue: (val) => _p(cell.setValue)(val)
+              }
+            })
+            return cells
           })
         }
         const bulkUpdateCells = (page, cells) => _p(sheets[page].bulkUpdateCells)(cells)
