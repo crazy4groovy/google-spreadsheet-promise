@@ -76,6 +76,22 @@ function init (key, credsPath) {
         }
         // console.log(funcs)
 
+        const sheetFuncs = (sheetNumber) => ({
+          setTitle: funcs.setTitle,
+          getInfo: funcs.getInfo,
+          getRows: funcs.getRows.bind(sheets, sheetNumber),
+          getCells: funcs.getCells.bind(sheets, sheetNumber),
+          bulkUpdateCells: funcs.bulkUpdateCells.bind(sheets, sheetNumber),
+          addRow: funcs.addRow.bind(sheets, sheetNumber),
+          setHeaderRow: funcs.setHeaderRow.bind(sheets, sheetNumber),
+          getHeaderRow: funcs.getHeaderRow.bind(sheets, sheetNumber),
+          resize: funcs.resize.bind(sheets, sheetNumber),
+          clear: funcs.clear.bind(sheets, sheetNumber),
+          del: funcs.del.bind(sheets, sheetNumber)
+        })
+
+        funcs.sheetNumber = sheetFuncs
+
         resolve(funcs)
       })
     })

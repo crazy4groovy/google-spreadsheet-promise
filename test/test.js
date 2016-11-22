@@ -8,8 +8,8 @@ const credsPath = '../google-generated-creds.json'
 
 const maxTime = 4000
 
-describe.only('# db', () => {
-  describe('## sanity', () => {
+describe('# db', () => {
+  describe('## sanity simple funcs', () => {
     let sheets
     before(function * () {
       sheets = yield db.init(key, credsPath)
@@ -82,6 +82,38 @@ describe.only('# db', () => {
 
         yield sheets.bulkUpdateCells(1, [cell1, cell2])
       })
+    })
+  })
+
+  describe('## sanity sheetNumber funcs', () => {
+    let sheetOne
+    before(function * () {
+      sheetOne = (yield db.init(key, credsPath)).sheetNumber(1)
+    })
+
+    it('should getInfo', function * () {
+      this.timeout(maxTime)
+      const sheetOneInfo = yield sheetOne.getInfo()
+      console.log(`>loaded sheet title: ${sheetOneInfo.title}`)
+      console.log(`>JSON: ${JSON.stringify(sheetOneInfo)}`)
+    })
+
+    it('should getRows', function * () {
+      this.timeout(maxTime)
+      const rows = yield sheetOne.getRows()
+      console.log(`>rows length: ${rows.length}`)
+    })
+
+    it('should getHeaderRow', function * () {
+      this.timeout(maxTime)
+      const headerRow = yield sheetOne.getHeaderRow()
+      console.log(`>headerRow: ${headerRow} ${headerRow.length}`)
+    })
+
+    it('should getCells', function * () {
+      this.timeout(maxTime)
+      const cells = yield sheetOne.getCells()
+      console.log(`>cells length: ${cells.length}`)
     })
   })
 })

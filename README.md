@@ -6,7 +6,7 @@ Helpful link on limits of [Google spreadsheets](https://support.google.com/drive
 
 ## Usage
 
-```js
+```javascript
 const gsp = require('google-spreadsheet-promise')
 
 // a spreadsheet key is the long id in the sheets URL
@@ -14,21 +14,36 @@ const key = '1fyGsYhinmTRNpJyw_uVDpI3wYmWz9FXIYgR2DuobZ_w'
 // see Auth help/tips below
 const credsPath = './google-generated-creds.json'
 
-...
+. . .
 
 // Note- assumed to be in a generator for "yield":
 const sheets = yield gsp.init(key, credsPath)
-const sheetNumber = 1 // 1-based indexing of sheets
 
+
+// Syntax #1: any-sheet syntax:
 const sheetsInfo = yield sheets.getInfo()
-const headerRow = yield sheets.getHeaderRow(sheetNumber)
-const rows = yield sheets.getRows(sheetNumber)
-const cells = yield sheets.getCells(sheetNumber)
-const data = yield sheets.addRow(sheetNumber, {
+const headerRow = yield sheets.getHeaderRow(1) // 1-based indexing of sheets
+const rows = yield sheets.getRows(1)
+const cells = yield sheets.getCells(1)
+const data = yield sheets.addRow(1, {
    col1Name: Math.random(),
-   col2Name: Date.now() / (10 * 1000 * 1000) | 0
+   col2Name: Date.now()
 })
 yield sheets.del(sheetNumber)
+
+
+// Syntax #2: single-sheet syntax:
+const sheetOne = sheets.sheetNumber(1) // 1-based indexing of sheets
+
+const sheetOneInfo = yield sheetOne.getInfo()
+const headerRow = yield sheetOne.getHeaderRow()
+const rows = yield sheetOne.getRows()
+const cells = yield sheetOne.getCells()
+const data = yield sheetOne.addRow({
+   col1Name: Math.random(),
+   col2Name: Date.now()
+})
+yield sheetOne.del()
 ```
 
 ## Full list of promisified functions
