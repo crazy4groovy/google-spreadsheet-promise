@@ -1,6 +1,8 @@
-# google-spreadsheet-promise
+# [deprecated] google-spreadsheet-promise
 
-A light-weight promise wrapper around NPM [google-spreadsheet](https://www.npmjs.com/package/google-spreadsheet).
+A light-weight promise wrapper around NPM [google-spreadsheet v2](https://www.npmjs.com/package/google-spreadsheet/v/2.0.9) / Google sheets v3 API.
+
+> Note: please use [google-spreadsheet v3](https://www.npmjs.com/package/google-spreadsheet) now; it is promise enabled and leverages the latest Google sheets v4 API.
 
 Helpful link on limits of [Google spreadsheets](https://support.google.com/drive/answer/37603?hl=en).
 
